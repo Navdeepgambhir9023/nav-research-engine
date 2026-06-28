@@ -1,0 +1,31 @@
+name: Publish to Marketplace
+
+on:
+  push:
+    tags:
+      - 'v*'
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate plugin structure
+        run: |
+          echo "Validating plugin structure..."
+          test -f .claude-plugin/plugin.json || exit 1
+          test -f .claude-plugin/skills/research/SKILL.md || exit 1
+          echo "Plugin structure valid ✓"
+
+      - name: Create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Research Engine v${{ github.ref_name }}
+          draft: false
+          prerelease: false

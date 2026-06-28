@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "execution_id": null,
+  "status": "IDLE",
+  "cycle": {
+    "number": 0,
+    "date": null,
+    "started_at": null
+  },
+  "mission": {
+    "current": null,
+    "queue_depth": 0
+  },
+  "checkpoint": {
+    "last": null,
+    "sequence": 0
+  },
+  "health": {
+    "last_successful": null,
+    "consecutive_failures": 0
+  },
+  "initialized_at": null
+}

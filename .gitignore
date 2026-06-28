@@ -1,0 +1,30 @@
+# Artifacts (generated per execution)
+artifacts/**/manifest.yaml
+
+# Knowledge base (generated)
+knowledge/**
+
+# Runtime state (transient)
+runtime/state/checkpoints/
+runtime/state/*.log
+runtime/state/*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Environment
+.env
+.env.local
+
+# Logs
+*.log
+logs/
