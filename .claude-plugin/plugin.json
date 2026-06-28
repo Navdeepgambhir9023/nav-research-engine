@@ -1,31 +1,8 @@
 {
   "name": "nav-research-engine",
-  "description": "An autonomous Research Operating System for Web3 market intelligence — orchestrates discovery, analysis, and validation through a knowledge-first architecture.",
+  "description": "An autonomous Research Operating System for Web3 market intelligence",
   "version": "0.1.0",
   "author": {
     "name": "Navdeep Singh"
-  },
-  "homepage": "https://github.com/Navdeepgambhir9023/nav-research-engine",
-  "repository": "https://github.com/Navdeepgambhir9023/nav-research-engine",
-  "license": "MIT",
-  "keywords": [
-    "research",
-    "web3",
-    "market-intelligence",
-    "knowledge-base",
-    "agentic",
-    "claude-code"
-  ],
-  "skills": [
-    {
-      "name": "research",
-      "path": "skills/research/SKILL.md"
-    }
-  ],
-  "commands": [
-    {
-      "name": "research",
-      "description": "Execute the daily Web3 research mission"
-    }
-  ]
+  }
 }
