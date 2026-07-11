@@ -1,7 +1,7 @@
 # Output Contract
 
 **Document ID**: runtime.3
-**Domain**: Runtime
+**Domain**: Runtime (Domain-Agnostic)
 **Status**: Implementation Specification
 
 ---
@@ -20,6 +20,10 @@ This contract defines:
 
 **No execution produces arbitrary output.** All artifacts follow this contract.
 
+### Domain Extensibility
+
+This contract defines universal artifact types. Domain-specific artifacts may be added in `domains/<domain>/templates/`. When a domain-specific artifact conflicts with a universal one, the universal contract takes precedence.
+
 ---
 
 ## 2. Artifact Structure
@@ -29,15 +33,30 @@ This contract defines:
 ```
 artifacts/{YYYY-MM-DD}/
 ├── 01-mission.md              # Mission definition (input)
-├── 02-gemini-prompt.md       # Research prompt for LLM
-├── 03-research-report.md      # User's research results
-├── 04-knowledge-delta.md     # New entities extracted
-├── 05-hypotheses.md          # Generated hypotheses
+├── 02-research-prompt.md      # Research prompt for LLM
+├── 03-research-report.md      # Research results
+├── 04-knowledge-delta.md      # New entities extracted
+├── 05-hypotheses.md           # Generated hypotheses
 ├── 06-opportunities.md        # Identified opportunities
-├── 07-state-update.md        # State changes
-├── 08-next-mission.md        # Tomorrow's planned mission
-├── 09-audit-log.md           # Action log for this execution
-└── manifest.yaml             # Artifact manifest
+├── 07-state-update.md         # State changes
+├── 08-next-mission.md         # Tomorrow's planned mission
+├── 09-audit-log.md            # Action log for this execution
+└── manifest.yaml              # Artifact manifest
+```
+
+### Domain-Specific Artifacts
+
+Domain-specific artifacts should be placed alongside universal artifacts:
+
+```
+artifacts/{YYYY-MM-DD}/
+├── 01-mission.md
+├── 02-research-prompt.md
+├── ... (universal artifacts)
+└── domains/
+    └── {domain}/
+        ├── 10-{domain-specific}.md
+        └── manifest.yaml      # Domain-specific manifest additions
 ```
 
 ### Manifest
@@ -49,27 +68,29 @@ manifest:
   version: "1.0"
   execution_id: "uuid"
   date: YYYY-MM-DD
-  
+
   artifacts:
     - filename: 01-mission.md
       type: mission
       size: bytes
       checksum: sha256
       validated: boolean
-      
-    - filename: 02-gemini-prompt.md
+
+    - filename: 02-research-prompt.md
       type: prompt
       size: bytes
       checksum: sha256
       validated: boolean
-      
-    # ... all artifacts
-    
+
+    # ... all universal artifacts
+
+    # ... domain-specific artifacts (if any)
+
   validation:
     all_present: boolean
     all_validated: boolean
     quality_score: number
-    
+
   generated_at: ISO8601
   generated_by: string
 ```
@@ -133,48 +154,48 @@ mission_definition:
 
 ---
 
-### 3.2 Gemini Research Prompt
+### 3.2 Research Prompt
 
-**Filename**: `02-gemini-prompt.md`
+**Filename**: `02-research-prompt.md`
 
 **Purpose**: Structured prompt for LLM research.
 
 **Schema**:
 
 ```yaml
-gemini_prompt:
+research_prompt:
   header:
     mission_id: string
     generated_at: ISO8601
     model: string
     max_tokens: number
-    
+
   system:
     role: string
     context: string
     constraints: List[string]
-    
+
   objective: string
-  
+
   context:
     background: string
     existing_knowledge: string
     knowledge_gaps: List[string]
-    
+
   scope:
     investigate: List[string]
     ignore: List[string]
-    
+
   evidence_requirements:
     minimum_sources: number
     required_source_types: List[string]
-    
+
   output_requirements:
     format: string
     structure: string
     min_length: string
     sections: List[string]
-    
+
   success_criteria:
     - criterion: string
 ```
@@ -348,16 +369,16 @@ opportunities:
   header:
     mission_id: string
     date: YYYY-MM-DD
-    
+
   opportunities:
     - id: string
       name: string
-      type: market_entry | integration | partnership | investment
-      
+      type: string  # Domain-specific: e.g., market_entry, partnership, feature_request
+
       problem_addressed:
         - id: string
           description: string
-          
+
       score:
         total: number
         breakdown:
@@ -366,9 +387,9 @@ opportunities:
           timing: number
           competition: number
           risk: number
-          
+
       phase: emerging | growing | mature | declining
-      
+
       evidence: List[string]
 ```
 
@@ -545,23 +566,23 @@ audit_log:
 │                        ARTIFACT DEPENDENCIES                               │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│   01-mission.md ──┬──▶ 02-gemini-prompt.md                             │
+│   01-mission.md ──┬──▶ 02-research-prompt.md                            │
 │                    │         │                                            │
 │                    │         ▼                                            │
 │                    │    03-research-report.md                             │
 │                    │         │                                            │
-│                    │         ├──▶ 04-knowledge-delta.md                  │
-│                    │         │         │                                    │
-│                    │         │         ├──▶ 05-hypotheses.md                │
-│                    │         │         │                                    │
-│                    │         │         └──▶ 06-opportunities.md             │
+│                    │         ├──▶ 04-knowledge-delta.md                   │
+│                    │         │         │                                   │
+│                    │         │         ├──▶ 05-hypotheses.md              │
+│                    │         │         │                                   │
+│                    │         │         └──▶ 06-opportunities.md           │
 │                    │         │                                            │
 │                    │         ▼                                            │
-│                    └───▶ 07-state-update.md                               │
-│                              │                                             │
-│                              ├──▶ 08-next-mission.md                       │
-│                              │                                             │
-│                              └──▶ 09-audit-log.md                          │
+│                    └───▶ 07-state-update.md                                │
+│                              │                                            │
+│                              ├──▶ 08-next-mission.md                      │
+│                              │                                            │
+│                              └──▶ 09-audit-log.md                         │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -630,9 +651,9 @@ After cross-artifact validation:
 
 | Entity | Pattern | Example |
 |--------|---------|---------|
-| Entity | `{type}-{slug}` | `protocol-uniswap-v3` |
+| Entity | `{type}-{slug}` | `organization-acme-corp` |
 | Signal | `signal-{uuid}` | `signal-a1b2c3d4` |
-| Mission | `mission-{date}-{seq}` | `mission-2026-06-29-001` |
+| Mission | `mission-{date}-{seq}` | `mission-2026-07-12-001` |
 
 ---
 
@@ -713,9 +734,11 @@ Artifacts are accessible via:
 - `runtime/specifications/mission-contract.md` — Mission definition
 - `docs/04-knowledge/entity-schemas.md` — Entity validation
 - `docs/06quality/quality-gates.md` — Quality validation
+- `domains/<domain>/templates/` — Domain-specific artifact templates
 
 ## Change History
 
 | Version | Date | Change |
 |---------|------|--------|
 | 0.1.0 | 2026-06-29 | Initial specification |
+| 1.0.0 | 2026-07-12 | Generalize for multi-domain use (renamed gemini-prompt to research-prompt, domain extensibility) |
