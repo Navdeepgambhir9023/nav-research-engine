@@ -6,6 +6,10 @@
 
 ---
 
+**Extensibility Note**: This knowledge model defines domain-agnostic core entities. Domain-specific entities (e.g., Web3 protocols, DeFi primitives) are defined in `domains/<domain>/knowledge/`. See [domain-config.md](../01-architecture/domain-config.md) for the extension mechanism.
+
+---
+
 ## 1. Philosophy
 
 ### What Is Knowledge?
@@ -83,14 +87,16 @@ Every first-class entity in the knowledge graph is defined here. These entities 
 
 **Properties**:
 - Name
-- Category (DeFi, NFT, Gaming, Social, Infrastructure, etc.)
+- Category (defined in domain taxonomy, e.g., Industry, Vertical, or domain-specific categories)
 - Stage (emerging, growing, mature, declining)
 - Total addressable value
 - Growth trajectory
 
+**Note**: Domain-specific market categories (e.g., "DeFi", "NFT", "Lending") are defined in `domains/<domain>/taxonomy.md`. This core model is domain-agnostic.
+
 **Constraints**:
 - A market may contain zero or more segments
-- A market may contain zero or more protocols
+- A market may contain zero or more solutions
 - Every entity ultimately traces back to a market
 
 ---
@@ -155,25 +161,26 @@ Every first-class entity in the knowledge graph is defined here. These entities 
 
 ---
 
-#### Protocol
+#### Solution
 
-**Definition**: A deployed system that provides a solution to one or more problems.
+**Definition**: A product, service, or system that provides a solution to one or more problems.
 
-**Purpose**: Protocols are the primary subject of Web3 research. They are the actors in the ecosystem.
+**Purpose**: Solutions are the primary actors in any research domain. In Web3, these are protocols. In other domains, these are products, services, or providers.
 
 **Properties**:
 - Name
-- Category (DEX, Lending, Yield, etc.)
-- Ecosystem (Ethereum, Solana, etc.)
+- Category (defined in domain taxonomy, e.g., DEX, Lending, SaaS, Hardware)
+- Ecosystem (platform or environment, optional)
 - Status (active, paused, deprecated)
 - Launch date
-- TVL (if applicable)
-- Token (if applicable)
+- Key metrics (domain-specific, optional)
+
+**Note**: Web3-specific properties (TVL, Token, Ecosystem chains) are defined in `domains/web3/schemas/solution.md`.
 
 **Constraints**:
-- A protocol may solve zero or more problems
-- A protocol may compete with zero or more protocols
-- A protocol may integrate with zero or more protocols
+- A solution may solve zero or more problems
+- A solution may compete with zero or more solutions
+- A solution may integrate with zero or more solutions
 
 ---
 
@@ -415,19 +422,19 @@ Every first-class entity in the knowledge graph is defined here. These entities 
 
 #### Competitor
 
-**Definition**: A protocol that competes for the same users or capital as our subject.
+**Definition**: A solution that competes for the same users or capital as our subject.
 
 **Purpose**: Competitors contextualize opportunities and threats.
 
 **Properties**:
-- Protocol (reference)
+- Solution (reference)
 - Competitive dimensions (where they compete)
 - Competitive strength (weak, moderate, strong)
 - Market share
 
 **Constraints**:
-- A competitor must reference exactly one protocol
-- A competitor may compete with zero or more other protocols
+- A competitor must reference exactly one solution
+- A competitor may compete with zero or more other solutions
 
 ---
 
@@ -545,8 +552,8 @@ The knowledge graph connects entities through typed relationships. These relatio
 
 | Relationship | From | To | Description |
 |-------------|------|-----|-------------|
-| `competes_with` | Protocol | Protocol | Protocols compete |
-| `integrates_with` | Protocol | Protocol | Protocols integrate |
+| `competes_with` | Solution | Solution | Solutions compete |
+| `integrates_with` | Solution | Solution | Solutions integrate |
 | `affects` | Trend | Market | Trend affects market |
 | `influences` | Trend | Opportunity | Trend influences opportunity |
 
@@ -1059,8 +1066,8 @@ Evidence chains must be complete:
 No two entities may represent the same real-world object.
 
 ```
-✓ Valid: Single Protocol("Uniswap")
-✗ Invalid: Protocol("Uniswap") + Protocol("Uniswap V3") as separate entities
+✓ Valid: Single Solution("Acme Product")
+✗ Invalid: Solution("Acme Product") + Solution("Acme Product V2") as separate entities
 ```
 
 ---
