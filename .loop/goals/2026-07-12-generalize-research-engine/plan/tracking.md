@@ -31,24 +31,24 @@
   - [ ] Task 2.2: Abstract the Knowledge Model
     - [x] Step 1: Identify Web3-specific entities
     - [x] Step 2: Define core entity types
-    - [ ] Step 3: Update the taxonomy document
-    - [ ] Step 4: Verify no Web3 specifics remain in core docs
-    - [ ] Step 5: Commit
-    - [ ] Step 6: Update tracking.md
+    - [x] Step 3: Update the taxonomy document
+    - [x] Step 4: Verify no Web3 specifics remain in core docs
+    - [x] Step 5: Commit
+    - [x] Step 6: Update tracking.md
 - [ ] **Phase 3: Output Contract + Execution Layer** — see [03-output-execution.md](./03-output-execution.md)
   - [ ] Task 3.1: Standardize Output Contract
-    - [ ] Step 1: Review existing output contract
-    - [ ] Step 2: Generalize artifact structure
-    - [ ] Step 3: Verify artifact types are domain-agnostic
-    - [ ] Step 4: Commit
-    - [ ] Step 5: Update tracking.md
+    - [x] Step 1: Review existing output contract
+    - [x] Step 2: Generalize artifact structure
+    - [x] Step 3: Verify artifact types are domain-agnostic
+    - [x] Step 4: Commit
+    - [x] Step 5: Update tracking.md
   - [ ] Task 3.2: Execution Layer Architecture
-    - [ ] Step 1: Define execution layer responsibilities
-    - [ ] Step 2: Document subagent/workflow pattern
-    - [ ] Step 3: Document harness integration
-    - [ ] Step 4: Verify document completeness
-    - [ ] Step 5: Commit
-    - [ ] Step 6: Update tracking.md
+    - [x] Step 1: Define execution layer responsibilities
+    - [x] Step 2: Document subagent/workflow pattern
+    - [x] Step 3: Document harness integration
+    - [x] Step 4: Verify document completeness
+    - [x] Step 5: Commit
+    - [x] Step 6: Update tracking.md
 
 ## How a Wave Re-Reads This File
 
