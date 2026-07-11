@@ -1,12 +1,12 @@
 # nav-research-engine
 
-**An Autonomous Research Operating System for Web3 Market Intelligence**
+**A Human-in-the-Loop Research Orchestration System for Web3 Market Intelligence**
 
 ---
 
 ## What Is This?
 
-`nav-research-engine` is a **Research Operating System (ROS)** — an autonomous engine for discovering, organizing, validating, and prioritizing business opportunities in the Web3 ecosystem.
+`nav-research-engine` is a **Research Orchestration System** that coordinates the discovery, organization, validation, and prioritization of business opportunities in the Web3 ecosystem — with a human researcher performing the actual research.
 
 The repository itself is the product. The runtime is the operating system that maintains it.
 
