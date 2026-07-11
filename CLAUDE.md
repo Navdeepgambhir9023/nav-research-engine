@@ -1,12 +1,12 @@
 # nav-research-engine
 
-**Research Operating System for Web3 Market Intelligence**
+**Domain-Agnostic Research Orchestration Harness**
 
 ---
 
 ## Identity
 
-This repository is a **Research Operating System (ROS)** — an autonomous engine for discovering, organizing, validating, and prioritizing business opportunities in the Web3 ecosystem.
+This repository is a **Research Orchestration Harness** — a system for discovering, organizing, validating, and prioritizing insights across any domain (AI, BioTech, Market Research, PMF Analysis, etc.).
 
 The repository itself is the product. The runtime is the operating system that maintains it.
 

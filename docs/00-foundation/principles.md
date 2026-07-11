@@ -69,7 +69,7 @@ Establishes the non-negotiable design axioms that guide all architectural decisi
 - Prefer interface-based design over implementation inheritance
 - Deprecate components gracefully before removal
 
-**Rationale**: The Web3 ecosystem evolves rapidly; the system must adapt without rewriting.
+**Rationale**: Markets and domains evolve rapidly; the system must adapt without rewriting.
 
 ---
 

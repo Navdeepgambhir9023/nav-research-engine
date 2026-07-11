@@ -1,14 +1,18 @@
 # nav-research-engine
 
-**A Human-in-the-Loop Research Orchestration System for Web3 Market Intelligence**
+**A Domain-Agnostic Research Orchestration Harness**
 
 ---
 
 ## What Is This?
 
-`nav-research-engine` is a **Research Orchestration System** that coordinates the discovery, organization, validation, and prioritization of business opportunities in the Web3 ecosystem — with a human researcher performing the actual research.
+`nav-research-engine` is a **Research Orchestration Harness** that helps researchers discover, organize, validate, and prioritize insights across any domain (AI, BioTech, Market Research, PMF Analysis, etc.) — with a human researcher performing the actual research.
 
-The repository itself is the product. The runtime is the operating system that maintains it.
+The harness provides:
+- **Adaptive Discovery** — Clarifies vague research queries through intelligent questioning
+- **Multi-Domain Support** — Works across any vertical with domain-specific configurations
+- **Subagent Orchestration** — Coordinates Claude Code, Gemini CLI, Codex for research execution
+- **Standardized Outputs** — Consistent artifact formats regardless of domain
 
 ---
 
@@ -20,8 +24,8 @@ The repository itself is the product. The runtime is the operating system that m
 # Install the plugin
 /plugin install nav-research-engine@nav
 
-# Execute daily research
-/nav:research
+# Execute research (requires --domain flag)
+/nav:research --domain ai "find PMF for LLM applications"
 ```
 
 ### In Any Project
@@ -35,8 +39,34 @@ cd nav-research-engine
 claude
 
 # Execute research
-/research
+/nav:research --domain <domain> "<query>"
 ```
+
+---
+
+## Usage
+
+### Command Syntax
+
+```bash
+/nav:research --domain <domain> <query>
+```
+
+**Examples:**
+```bash
+/nav:research --domain ai "find PMF for LLM applications"
+/nav:research --domain market "analyze competitive landscape for SaaS"
+/nav:research --domain pmf "validate problem statement for X"
+/nav:research --domain tech "research AI agent frameworks"
+```
+
+**Available Domains:**
+- `ai` — Artificial Intelligence & Machine Learning
+- `market` — Market Research & Competitive Analysis
+- `pmf` — Product-Market Fit Analysis
+- `tech` — Technology Research
+
+If no `--domain` is provided, the system will ask clarifying questions.
 
 ---
 
@@ -44,22 +74,22 @@ claude
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                         RESEARCH OPERATING SYSTEM                               │
+│                    NAV-RESEARCH-ENGINE HARNESS                              │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
 │   ┌─────────────┐     ┌─────────────┐     ┌─────────────┐              │
-│   │ Discovery  │────▶│  Analysis  │────▶│  Planning  │              │
-│   │            │     │             │     │            │              │
-│   │ Find signals │   │ Transform to │   │ Decide what │              │
-│   │ in Web3     │   │ insights     │   │ to research │              │
+│   │  Discovery │────▶│  Analysis │────▶│  Planning │              │
+│   │            │     │           │     │            │              │
+│   │ Adaptive   │     │ Transform  │     │ Prioritize │              │
+│   │ Questions  │     │ to Insights│     │ Research   │              │
 │   └─────────────┘     └─────────────┘     └──────┬──────┘              │
 │                                                   │                       │
 │                                                   ▼                       │
 │                                          ┌─────────────┐                │
 │                                          │ Execution  │                │
 │                                          │            │                │
-│                                          │ Run LLM    │                │
-│                                          │ prompts     │                │
+│                                          │ Subagent  │                │
+│                                          │ Workflows │                │
 │                                          └──────┬──────┘                │
 │                                                 │                         │
 │                                                 ▼                         │
@@ -67,16 +97,7 @@ claude
 │                                          │ Validation │                │
 │                                          │            │                │
 │                                          │ Quality    │                │
-│                                          │ gates      │                │
-│                                          └──────┬──────┘                │
-│                                                 │                         │
-│                                                 ▼                         │
-│                                          ┌─────────────┐                │
-│                                          │ Knowledge  │                │
-│                                          │   Base     │                │
-│                                          │            │                │
-│                                          │ Store &    │                │
-│                                          │ grow       │                │
+│                                          │ Gates      │                │
 │                                          └─────────────┘                │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -88,116 +109,58 @@ claude
 
 ```
 nav-research-engine/
-├── .claude-plugin/           # Claude Code plugin manifest
-│   ├── plugin.json           # Plugin definition
-│   ├── marketplace.json      # Marketplace listing
-│   └── skills/
-│       └── research/
-│           └── SKILL.md       # Research command skill
-├── docs/                      # Architecture specifications (source of truth)
-│   ├── 00-foundation/       # Vision, principles, glossary
-│   ├── 01-architecture/     # System design
-│   ├── 02-engine/            # Research Loop Engine, State Manager, Event Bus
-│   ├── 03-departments/       # Department contracts
-│   ├── 04-knowledge/          # Knowledge model
-│   ├── 05-operations/         # Daily/weekly cycles
-│   ├── 06quality/            # Quality gates
-│   ├── 07-evolution/         # Roadmap, versioning
-│   ├── 08-integration/       # External contracts (Gemini, etc.)
-│   └── 09-safety/            # Human oversight, recovery
-├── runtime/                    # Runtime layer (orchestration)
-│   ├── commands/             # Entry points
-│   ├── specifications/        # Runtime contracts
-│   └── state/                # Execution state
-├── knowledge/                # Knowledge base (generated)
-│   ├── entities/
-│   ├── evidence/
-│   └── signals/
-└── artifacts/                # Execution outputs (generated)
-    └── YYYY-MM-DD/
+├── CLAUDE.md                     # Core behavior and constraints
+├── README.md                     # This file
+├── .claude-plugin/               # Plugin manifest
+│   ├── plugin.json
+│   └── commands/research.md
+├── docs/                         # Architecture specifications
+│   ├── 00-foundation/           # Vision, principles, glossary
+│   ├── 01-architecture/         # System design
+│   ├── 02-engine/               # State management, event bus
+│   ├── 04-knowledge/            # Knowledge model, taxonomy
+│   └── 09-safety/              # Human oversight, safeguards
+├── runtime/                      # Runtime layer (orchestration)
+│   ├── commands/                 # Entry points
+│   │   ├── parse-input.sh      # Domain flag parsing
+│   │   ├── research.sh          # Research orchestration
+│   │   └── discovery.md         # Adaptive questioning
+│   ├── specifications/          # Runtime contracts
+│   └── state/                   # Execution state
+└── .loop/                       # Goal system
 ```
 
 ---
 
 ## Key Concepts
 
-### Research Loop Engine
+### Adaptive Discovery
 
-The heart of the system. Coordinates departments through a deterministic execution cycle:
-
-```
-WAKE → DISCOVER → ANALYZE → PLAN → EXECUTE → VALIDATE → REST
-```
-
-### Knowledge Model
-
-Canonical entity types for Web3 research:
-
-- **Protocols** — DeFi protocols, L2s, infrastructure
-- **Signals** — Detected observations
-- **Evidence** — Verifiable information
-- **Claims** — Asserted propositions
-- **Insights** — Synthesized understanding
-- **Opportunities** — Potential actions
-- **Hypotheses** — Testable propositions
-
-### Department System
-
-Five autonomous departments:
-
-| Department | Responsibility |
-|------------|----------------|
-| Discovery | Find signals in Web3 ecosystem |
-| Analysis | Transform signals into insights |
-| Planning | Decide what to research |
-| Execution | Run research missions |
-| Validation | Ensure quality |
-
-### State Management
-
-Execution context is checkpointed for resumability:
-
-- State is transient (execution context)
-- Knowledge is permanent (what we know)
-- Events are immutable (what happened)
-
----
-
-## Commands
-
-### `/research` or `/nav:research`
-
-Execute the daily research mission.
-
-**Flow:**
-1. Load state from `runtime/state/`
-2. Determine or generate mission
-3. Generate research prompt
-4. Await your research
-5. Extract knowledge
-6. Validate quality
-7. Update knowledge base
-8. Generate artifacts
-9. Queue tomorrow's mission
-
----
-
-## Artifacts
-
-Every execution produces:
+The system asks clarifying questions when your query is vague:
 
 ```
-artifacts/YYYY-MM-DD/
-├── 01-mission.md              # Mission definition
-├── 02-gemini-prompt.md       # Research prompt
-├── 03-research-report.md      # Your research
-├── 04-knowledge-delta.md     # New entities
-├── 05-hypotheses.md          # Generated hypotheses
-├── 06-opportunities.md       # Identified opportunities
-├── 07-state-update.md        # State changes
-├── 08-next-mission.md        # Tomorrow's mission
-└── 09-audit-log.md         # Execution log
+User: /nav:research "help me understand my market"
+System: What is your product/service? Who is your target user?
+User: [provides context]
+System: What specific aspect of the market do you want to understand?
+User: [clarifies]
+System: [executes research with full context]
 ```
+
+### Domain Configuration
+
+Each domain has its own configuration with:
+- Domain-specific entity types
+- Taxonomy hierarchies
+- Research templates
+- Quality standards
+
+### Execution Layer
+
+The harness orchestrates research using:
+- **Subagents** — Parallel research tasks
+- **Workflows** — Coordinated multi-step research
+- **Quality Gates** — Validation checkpoints
 
 ---
 
@@ -207,8 +170,8 @@ artifacts/YYYY-MM-DD/
 2. **Evidence Driven** — Every claim is traceable to evidence
 3. **Human-in-the-Loop** — Critical decisions require human judgment
 4. **Deterministic** — Same inputs → same outputs
-5. **Composable** — Departments are independent, replaceable
-6. **Repository First** — The repo is the product, not the code
+5. **Composable** — Components are independent, replaceable
+6. **Domain-Agnostic** — Works across any vertical
 
 ---
 
@@ -216,32 +179,12 @@ artifacts/YYYY-MM-DD/
 
 | Document | Purpose |
 |----------|---------|
-| `docs/02-engine/research-loop.md` | Execution orchestration |
+| `docs/01-architecture/domain-config.md` | Domain configuration structure |
+| `docs/01-architecture/execution-layer.md` | Subagent orchestration |
 | `docs/02-engine/state-manager.md` | Execution context |
 | `docs/02-engine/event-bus.md` | Communication model |
 | `docs/04-knowledge/knowledge-model.md` | Entity definitions |
-| `docs/03-departments/departments.md` | Department contracts |
-| `docs/06quality/quality-gates.md` | Quality standards |
-
----
-
-## Development Status
-
-| Component | Status |
-|-----------|--------|
-| Architecture | ✅ Complete |
-| Runtime | 🚧 In Progress |
-| Implementation | ⬜ Pending |
-| First Research | ⬜ Pending |
-
----
-
-## Contributing
-
-1. Read `docs/` to understand the architecture
-2. Read `CLAUDE.md` for behavioral constraints
-3. Run `/research` to execute missions
-4. Update `docs/` via ADR for architectural changes
+| `docs/04-knowledge/taxonomy.md` | Classification hierarchy |
 
 ---
 

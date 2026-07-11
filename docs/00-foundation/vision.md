@@ -20,7 +20,7 @@ Defines what the Research Operating System (ROS) *is* and *is not*. Serves as th
 
 ### What the ROS Is
 
-The **nav-research-engine** is a Research Operating System designed to autonomously discover, organize, validate, and prioritize business opportunities within the Web3 ecosystem.
+The **nav-research-engine** is a domain-agnostic Research Orchestration System designed to help researchers discover, organize, validate, and prioritize insights across any domain (AI, BioTech, Market Research, PMF Analysis, etc.).
 
 The ROS is:
 - **A living knowledge platform** — The repository itself becomes an evolving intelligence asset, not just a container for code
