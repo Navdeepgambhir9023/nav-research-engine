@@ -1,129 +1,161 @@
-# /research Command
+#!/bin/bash
+#
+# research.sh - Research command entry point with domain support
+#
+# Usage: research.sh [args...]
+#
+# Parses --domain <domain> <query> format and routes to appropriate domain config.
 
-**Entry Point**: Execute the daily research mission
+set -euo pipefail
 
----
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+PARSE_SCRIPT="$SCRIPT_DIR/parse-input.sh"
 
-## Purpose
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
 
-`/research` is the sole entry point for executing research in the nav-research-engine.
+# Load state
+STATE_DIR="$PROJECT_ROOT/runtime/state"
+LOOP_STATE="$STATE_DIR/loop-state.json"
 
-It invokes the runtime layer to orchestrate the architecture specifications.
+# Parse input
+parse_input() {
+    if [[ ! -f "$PARSE_SCRIPT" ]]; then
+        echo "Error: parse-input.sh not found at $PARSE_SCRIPT" >&2
+        exit 1
+    fi
 
----
+    local result
+    result="$(bash "$PARSE_SCRIPT" "$@")"
 
-## Command Signature
+    # Extract domain and query from result
+    domain="$(echo "$result" | sed -n 's/^domain=\([^|]*\).*/\1/p')"
+    query="$(echo "$result" | sed -n 's/.*|query=\(.*\)$/\1/p')"
 
-```bash
-/research [--mission <mission-id>] [--resume] [--force]
-```
+    export DOMAIN="$domain"
+    export QUERY="$query"
+}
 
-| Flag | Purpose |
-|------|---------|
-| `--mission <id>` | Execute a specific mission by ID |
-| `--resume` | Resume a paused execution |
-| `--force` | Force restart even if execution is pending |
+# Show usage/help
+show_usage() {
+    echo "Usage: /nav:research --domain <domain> <query>"
+    echo ""
+    echo "Required arguments:"
+    echo "  --domain <domain>    Research domain (ai, web3, pmf, market, tech)"
+    echo "  <query>              The research question or task"
+    echo ""
+    echo "Examples:"
+    echo "  /nav:research --domain ai find pmf for developer tooling"
+    echo "  /nav:research --domain web3 analyze defi lending protocols"
+    echo "  /nav:research --domain pmf validate b2b saas hypothesis"
+    echo ""
+    echo "Available domains:"
+    echo "  ai      - AI/ML startups, models, infrastructure"
+    echo "  web3    - Blockchain protocols, DeFi, NFTs, DAOs"
+    echo "  pmf     - Product-market-fit analysis"
+    echo "  market  - Market research, competitive analysis"
+    echo "  tech    - Technical deep-dives, architecture reviews"
+}
 
----
+# Validate domain
+validate_domain() {
+    local domain="$1"
+    local valid_domains="ai web3 pmf market tech"
 
-## Behavior
+    if [[ -z "$domain" ]]; then
+        echo -e "${RED}Error: Domain is required${NC}" >&2
+        echo "" >&2
+        show_usage >&2
+        exit 1
+    fi
 
-### When Called Without Arguments
+    if [[ ! " $valid_domains " =~ " $domain " ]]; then
+        echo -e "${RED}Error: Invalid domain '$domain'${NC}" >&2
+        echo "" >&2
+        echo -e "${YELLOW}Available domains:${NC}" >&2
+        echo "  ai      - AI/ML startups, models, infrastructure" >&2
+        echo "  web3    - Blockchain protocols, DeFi, NFTs, DAOs" >&2
+        echo "  pmf     - Product-market-fit analysis" >&2
+        echo "  market  - Market research, competitive analysis" >&2
+        echo "  tech    - Technical deep-dives, architecture reviews" >&2
+        exit 1
+    fi
+}
 
-1. Check for pending/paused execution
-2. If paused → prompt to resume
-3. If idle → generate and execute today's mission
-4. If running → report current status
+# Load domain configuration
+load_domain_config() {
+    local domain="$1"
+    local domain_dir="$PROJECT_ROOT/runtime/domains/$domain"
 
-### When Called With `--resume`
+    if [[ -d "$domain_dir" ]]; then
+        export DOMAIN_CONFIG="$domain_dir/config.yaml"
+        export DOMAIN_DIR="$domain_dir"
+    else
+        # Domain directory doesn't exist yet - will use defaults
+        export DOMAIN_CONFIG=""
+        export DOMAIN_DIR=""
+    fi
+}
 
-1. Verify execution is paused
-2. Restore state from last checkpoint
-3. Prompt user for research results
-4. Resume execution
+# Execute research for domain
+execute_research() {
+    local domain="$1"
+    local query="$2"
 
-### When Called With `--mission <id>`
+    echo -e "${GREEN}Research Engine${NC}"
+    echo -e "${GREEN}================${NC}"
+    echo ""
+    echo -e "${YELLOW}Domain:${NC} $domain"
+    echo -e "${YELLOW}Query:${NC} $query"
+    echo ""
 
-1. Load specified mission
-2. Execute regardless of current state
-3. Complete before returning
+    # Create state checkpoint
+    mkdir -p "$STATE_DIR"
 
----
+    # Save execution state
+    cat > "$LOOP_STATE" <<EOF
+{
+  "status": "ready",
+  "domain": "$domain",
+  "query": "$query",
+  "timestamp": "$(date -Iseconds)",
+  "phase": "awaiting_research"
+}
+EOF
 
-## Entry Point Wrapper
+    echo -e "${GREEN}State saved.${NC}"
+    echo ""
+    echo "Ready for research execution."
+    echo ""
+    echo "Next steps:"
+    echo "  1. Execute research based on the query"
+    echo "  2. Use /nav:research --resume to process results"
+}
 
-This command is the entry point. It does NOT contain business logic.
+# Main execution
+main() {
+    # Parse command line arguments
+    parse_input "$@"
 
-It only:
+    # Validate domain is provided
+    validate_domain "$DOMAIN"
 
-1. Validates the command
-2. Invokes the runtime orchestrator
-3. Routes user input to the appropriate phase
+    # Load domain configuration
+    load_domain_config "$DOMAIN"
 
----
+    # Execute research
+    execute_research "$DOMAIN" "$QUERY"
+}
 
-## Runtime Orchestration
+# Show help if no args or --help
+if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
+    show_usage
+    exit 0
+fi
 
-The command delegates to:
-
-```
-runtime/orchestrator.sh
-```
-
-Which orchestrates:
-
-1. State loading
-2. Mission determination
-3. Specification loading
-4. Artifact generation
-5. Pause/resume handling
-
----
-
-## Usage Examples
-
-```bash
-# Execute today's research mission
-/research
-
-# Resume a paused execution
-/research --resume
-
-# Execute a specific mission
-/research --mission mission-2026-06-29-001
-
-# Force restart
-/research --force
-```
-
----
-
-## Error Handling
-
-| Error | Response |
-|-------|---------|
-| No mission available | Generate new mission |
-| Execution already running | Report status, prompt to wait |
-| State corrupted | Attempt rollback, prompt user |
-| Specification missing | Abort with clear error |
-
----
-
-## Next Steps After Command
-
-The command outputs:
-
-1. Current mission definition
-2. Today's research prompt (for Gemini)
-3. Instructions for resuming with results
-
----
-
-## Anti-Patterns
-
-This command MUST NOT:
-
-- Execute research directly
-- Skip quality gates
-- Generate arbitrary output
-- Store state outside runtime/state/
+# Run main
+main "$@"
