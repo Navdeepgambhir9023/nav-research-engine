@@ -99,14 +99,14 @@ All entities inherit from this base:
 
 ---
 
-### Protocol Schema
+### Solution Schema
 
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ros.example.com/schemas/protocol/v1",
-  "title": "Protocol",
-  "description": "DeFi protocol, L1/L2 blockchain, or infrastructure project",
+  "$id": "https://ros.example.com/schemas/solution/v1",
+  "title": "Solution",
+  "description": "A product, service, or system providing solutions in any domain",
   "type": "object",
   "allOf": [
     { "$ref": "#/$defs/EntityBase" }
@@ -115,14 +115,15 @@ All entities inherit from this base:
   "properties": {
     "properties": {
       "type": "object",
-      "required": ["category", "ecosystem"],
+      "required": ["category"],
       "properties": {
         "category": {
-          "$ref": "#/$defs/ProtocolCategory"
+          "type": "string",
+          "description": "Solution category (defined in domain taxonomy, e.g., platform, service, tool)"
         },
         "ecosystem": {
           "type": "string",
-          "description": "Primary blockchain ecosystem"
+          "description": "Platform or environment (domain-specific)"
         },
         "launchDate": {
           "type": "string",
@@ -131,44 +132,32 @@ All entities inherit from this base:
         "status": {
           "enum": ["active", "paused", "deprecated", "acquired"]
         },
-        "tvl": {
-          "$ref": "#/$defs/ValueWithCurrency"
-        },
-        "token": {
+        "metrics": {
           "type": "object",
-          "properties": {
-            "symbol": { "type": "string" },
-            "address": { "type": "string" },
-            "chain": { "type": "string" }
-          }
+          "description": "Domain-specific key metrics (e.g., TVL for Web3, MAU for SaaS)"
         },
-        "audits": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/Audit" }
+        "domainProperties": {
+          "type": "object",
+          "description": "Domain-specific properties from domains/<domain>/schemas/solution.md"
         }
       }
     }
   },
   "examples": [
     {
-      "id": "https://ros.example.com/entities/protocol/uniswap-v3",
-      "entityType": "protocol",
-      "name": "Uniswap V3",
-      "aliases": ["Uniswap", "UNI"],
-      "description": "Automated market maker protocol on Ethereum",
+      "id": "https://ros.example.com/entities/solution/acme-platform",
+      "entityType": "solution",
+      "name": "Acme Platform",
+      "aliases": ["Acme"],
+      "description": "Enterprise collaboration platform",
       "properties": {
-        "category": "dex",
-        "ecosystem": "ethereum",
-        "launchDate": "2021-05-05",
+        "category": "platform",
+        "ecosystem": "cloud",
+        "launchDate": "2020-01-15",
         "status": "active",
-        "tvl": {
-          "value": 4500000000,
-          "currency": "USD"
-        },
-        "token": {
-          "symbol": "UNI",
-          "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F9840",
-          "chain": "ethereum"
+        "metrics": {
+          "mau": 500000,
+          "revenue": 10000000
         }
       },
       "createdAt": "2024-01-15T10:00:00Z",
@@ -179,8 +168,8 @@ All entities inherit from this base:
       },
       "sources": [
         {
-          "type": "api",
-          "url": "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
+          "type": "webpage",
+          "url": "https://acme.com/about",
           "retrievedAt": "2024-01-15T09:55:00Z"
         }
       ]
@@ -198,7 +187,7 @@ All entities inherit from this base:
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://ros.example.com/schemas/opportunity/v1",
   "title": "Opportunity",
-  "description": "A potential business opportunity in the Web3 ecosystem",
+  "description": "A potential business opportunity",
   "type": "object",
   "allOf": [
     { "$ref": "#/$defs/EntityBase" }
@@ -257,7 +246,7 @@ All entities inherit from this base:
     "EntityType": {
       "type": "string",
       "enum": [
-        "protocol",
+        "solution",
         "project",
         "person",
         "organization",
@@ -272,31 +261,21 @@ All entities inherit from this base:
 }
 ```
 
-### ProtocolCategory
+### SolutionCategory
+
+Domain-agnostic categories. Domain-specific categories (e.g., DEX, Lending for Web3) are defined in `domains/<domain>/schemas/solution.md`.
 
 ```json
 {
   "$defs": {
-    "ProtocolCategory": {
+    "SolutionCategory": {
       "type": "string",
       "enum": [
-        "dex",
-        "lending",
-        "yield",
-        "derivatives",
-        "options",
-        "stablecoin",
-        "nft",
-        "gaming",
-        "social",
+        "platform",
+        "service",
+        "tool",
         "infrastructure",
-        "bridge",
-        "oracle",
-        "dao",
-        "layer1",
-        "layer2",
-        "middleware",
-        "wallet",
+        "application",
         "other"
       ]
     }
@@ -320,7 +299,7 @@ All entities inherit from this base:
         "product_extension",
         "geographic_expansion",
         "user_segment",
-        "protocol_creation"
+        "creation"
       ]
     }
   }
@@ -425,25 +404,6 @@ All entities inherit from this base:
 }
 ```
 
-### Audit
-
-```json
-{
-  "$defs": {
-    "Audit": {
-      "type": "object",
-      "required": ["auditor", "date"],
-      "properties": {
-        "auditor": { "type": "string" },
-        "date": { "type": "string", "format": "date" },
-        "reportUrl": { "type": "string", "format": "uri" },
-        "result": { "enum": ["passed", "failed", "conditional"] }
-      }
-    }
-  }
-}
-```
-
 ### Relationship
 
 ```json
@@ -501,12 +461,14 @@ All entities inherit from this base:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.1.0 | 2026-07-12 | Abstracted for multi-domain use |
 | 1.0.0 | 2026-06-29 | Initial schema definitions |
 
 ## Dependencies
 
 - `knowledge-model.md` — Conceptual model these schemas implement
 - `graph-schema.md` — Relationship type definitions
+- `domain-config.md` — Domain schema extension mechanism
 
 ## Related Documents
 
@@ -517,4 +479,5 @@ All entities inherit from this base:
 
 | Version | Date | Change |
 |---------|------|--------|
+| 0.2.0 | 2026-07-12 | Abstracted for multi-domain use |
 | 0.1.0 | 2026-06-29 | Initial draft |

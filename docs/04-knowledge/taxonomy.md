@@ -26,39 +26,39 @@ Defines the hierarchical classification system used to categorize entities, oppo
 
 ---
 
-## Entity Classification Hierarchy
+## Domain-Specific Taxonomies
+
+Core taxonomy categories are domain-agnostic. Domain-specific categories are defined in:
+
+- `domains/<domain>/taxonomy.md`
+
+This document defines the core hierarchical structure that applies across all domains.
+
+---
+
+## Core Entity Classification Hierarchy
 
 ```
 Entity
-├── Protocol
-│   ├── DeFi Primitives
-│   │   ├── DEX
-│   │   ├── Lending
-│   │   ├── Yield Aggregator
-│   │   ├── Derivatives
-│   │   ├── Options
-│   │   └── Stablecoins
+├── Solution
+│   ├── Product
+│   │   ├── Platform
+│   │   ├── Service
+│   │   └── Tool
 │   ├── Infrastructure
-│   │   ├── Layer 1
-│   │   ├── Layer 2
-│   │   ├── Bridge
-│   │   └── Oracle
-│   ├── Application
-│   │   ├── NFT
-│   │   ├── Gaming
-│   │   ├── Social
-│   │   └── Productivity
-│   └── DAO
+│   │   ├── Foundation
+│   │   ├── Middleware
+│   │   └── Connector
+│   └── Application
 │
 ├── Project
-│   ├── dApp
-│   ├── Protocol Implementation
+│   ├── Implementation
 │   ├── Tooling
 │   └── Research
 │
 ├── Organization
-│   ├── DAO
-│   ├── VC / Fund
+│   ├── Company
+│   ├── Fund / Investor
 │   ├── Exchange
 │   └── Service Provider
 │
@@ -103,59 +103,36 @@ Entity
 
 ---
 
-## Protocol Categories
+## Generic Solution Categories
 
-### DeFi Primitives
+These categories are domain-agnostic. Domain-specific subcategories are defined in `domains/<domain>/taxonomy.md`.
 
-| Category | Definition | Examples |
-|----------|-----------|----------|
-| **DEX** | Decentralized exchanges for token swaps | Uniswap, Curve, Balancer |
-| **Lending** | Protocols for borrowing/lending assets | Aave, Compound, MakerDAO |
-| **Yield Aggregator** | Strategies that optimize yield across protocols | Yearn, Convex, Beefy |
-| **Derivatives** | Synthetic assets and structured products | Synthetix, dYdX |
-| **Options** | Protocols for options trading | Hegic, Dopex, Lyra |
-| **Stablecoins** | Price-stable tokens | USDC, USDT, DAI |
-
-### Infrastructure
+### By Solution Type
 
 | Category | Definition | Examples |
 |----------|-----------|----------|
-| **Layer 1** | Base blockchain networks | Ethereum, Solana, Avalanche |
-| **Layer 2** | Scaling solutions built on L1s | Arbitrum, Optimism, zkSync |
-| **Bridge** | Cross-chain asset transfer protocols | LayerZero, Wormhole, Axelar |
-| **Oracle** | External data providers for smart contracts | Chainlink, Band Protocol |
+| **Platform** | Comprehensive solutions enabling multiple use cases | Operating systems, marketplaces |
+| **Service** | Offerings that provide value to customers | SaaS, consulting |
+| **Tool** | Specialized solutions for specific tasks | Utilities, development tools |
 
-### Application Categories
+### By Layer
 
 | Category | Definition | Examples |
 |----------|-----------|----------|
-| **NFT** | Non-fungible token platforms and marketplaces | OpenSea, Blur, Magic Eden |
-| **Gaming** | GameFi and blockchain gaming platforms | Axie Infinity, Illuvium |
-| **Social** | Decentralized social networks | Lens Protocol, Friend.tech |
-| **Productivity** | Work and collaboration tools | Gitcoin, Rabbithole |
+| **Foundation** | Base infrastructure or core technology | Databases, protocols |
+| **Middleware** | Solutions connecting components | APIs, integration layers |
+| **Connector** | Solutions enabling interoperability | Bridges, adapters |
 
 ---
 
-## Ecosystem Classification
+## Generic Organization Categories
 
-```
-Ecosystem
-├── Ethereum
-│   ├── Mainnet
-│   ├── Arbitrum
-│   ├── Optimism
-│   └── Polygon
-├── Solana
-├── Avalanche
-├── Polygon
-├── BSC
-├── Cosmos
-│   ├── Cosmos Hub
-│   └── IBC Chains
-├── Arbitrum
-├── Base
-└── Other
-```
+| Category | Definition | Examples |
+|----------|-----------|----------|
+| **Company** | Business entities providing products/services | Corporations, startups |
+| **Fund / Investor** | Financial backers and investors | VC funds, angel investors |
+| **Exchange** | Platforms for trading or exchange | Marketplaces, trading venues |
+| **Service Provider** | Entities providing specialized services | Agencies, consultancies |
 
 ---
 
@@ -166,14 +143,13 @@ Ecosystem
 | Type | Definition |
 |------|------------|
 | **Market Entry** | Entering a new market or vertical |
-| **Integration** | Integrating with existing protocols |
+| **Integration** | Integrating with existing solutions |
 | **Partnership** | Strategic partnerships or collaborations |
-| **Investment** | Investment opportunities (token, equity) |
+| **Investment** | Investment opportunities |
 | **Acquisition** | Acquiring or merging with other entities |
 | **Product Extension** | Extending existing products |
 | **Geographic** | Expanding to new geographies |
 | **User Segment** | Targeting new user demographics |
-| **Protocol Creation** | Building new protocols |
 
 ### By Phase
 
@@ -212,7 +188,7 @@ Ecosystem
 
 | Impact | Definition |
 |--------|------------|
-| **Transformative** | Will fundamentally change the ecosystem |
+| **Transformative** | Will fundamentally change the landscape |
 | **Significant** | Will have notable effects |
 | **Moderate** | Worth monitoring but not game-changing |
 | **Minor** | Marginal impact |
@@ -263,12 +239,7 @@ priority:low
 ### Domain Tags
 
 ```
-domain:defi
-domain:nft
-domain:gaming
-domain:dao
-domain:infrastructure
-domain:cefi
+domain:<domain-name>
 ```
 
 ---
@@ -287,11 +258,11 @@ domain:cefi
 
 | Entity | Primary Type | Secondary Tags |
 |--------|--------------|----------------|
-| Uniswap V3 | Protocol > DeFi > DEX | ecosystem:ethereum, status:active |
-| Aave | Protocol > DeFi > Lending | ecosystem:ethereum, status:active |
-| Vitalik Buterin | Person > Founder | org:ethereum-foundation |
-| Paradigm | Organization > VC | focus:research |
-| ETH Bull Run | Event > Market | impact:significant, timeframe:medium-term |
+| Acme Platform | Solution > Product > Platform | domain:enterprise, status:active |
+| Beta Service | Solution > Product > Service | domain:saas, status:active |
+| Gamma Company | Organization > Company | domain:tech, status:active |
+| Delta Fund | Organization > Fund / Investor | focus:early-stage |
+| Tech Innovation | Event > Launch | impact:significant, timeframe:short-term |
 
 ---
 
@@ -300,6 +271,7 @@ domain:cefi
 - `knowledge-model.md` — Conceptual foundation
 - `entity-schemas.md` — Schema definitions for categories
 - `scoring-model.md` — Opportunity scoring methodology
+- `domain-config.md` — Domain taxonomy extension mechanism
 
 ## Related Documents
 
@@ -318,4 +290,5 @@ Review taxonomy quarterly for:
 
 | Version | Date | Change |
 |---------|------|--------|
+| 0.2.0 | 2026-07-12 | Abstracted for multi-domain use |
 | 0.1.0 | 2026-06-29 | Initial draft |

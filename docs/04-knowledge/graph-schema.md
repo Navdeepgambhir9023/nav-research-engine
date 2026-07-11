@@ -24,27 +24,27 @@ Defines the structure of the knowledge graph—nodes, edge types, and relationsh
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
 │                              ┌─────────────┐                                │
-│                              │  Ethereum   │                                │
-│                              │  (L1 Node)  │                                │
+│                              │   Market    │                                │
+│                              │  (Root)    │                                │
 │                              └──────┬──────┘                                │
 │                                     │                                       │
 │                    ┌────────────────┼────────────────┐                     │
 │                    │                │                │                     │
 │                    ▼                ▼                ▼                     │
-│             ┌───────────┐   ┌───────────┐   ┌───────────┐                │
-│             │  Uniswap  │   │   Aave    │   │  OpenSea  │                │
-│             │   (DEX)   │   │ (Lending) │   │   (NFT)   │                │
-│             └─────┬─────┘   └─────┬─────┘   └───────────┘                │
+│             ┌───────────┐   ┌───────────┐   ┌───────────┐               │
+│             │ Solution A │   │ Solution B │   │ Solution C │               │
+│             │(Platform)  │   │ (Service)  │   │   (Tool)   │               │
+│             └─────┬─────┘   └─────┬─────┘   └───────────┘               │
 │                   │               │                                       │
 │                   │               │                                       │
 │                   ▼               ▼                                       │
-│             ┌─────────────────────────────┐                               │
-│             │      integrated-with        │                               │
-│             │   (Relationship Edge)        │                               │
-│             └─────────────────────────────┘                               │
+│             ┌─────────────────────────────┐                              │
+│             │        integrates-with        │                              │
+│             │      (Relationship Edge)      │                              │
+│             └─────────────────────────────┘                              │
 │                                                                             │
-│  Node Types: Protocol, Project, Person, Organization, Concept, Event        │
-│  Edge Types: uses, integrates-with, invested-in, founded-by, etc.          │
+│  Node Types: Solution, Project, Person, Organization, Concept, Event          │
+│  Edge Types: uses, integrates-with, invested-in, founded-by, etc.           │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -53,23 +53,22 @@ Defines the structure of the knowledge graph—nodes, edge types, and relationsh
 
 ## Node Types
 
-### Protocol Node
+### Solution Node
 
 ```yaml
-type: protocol
+type: solution
 properties:
   - id: URI (unique identifier)
   - name: string
-  - category: ProtocolCategory
-  - ecosystem: string
+  - category: SolutionCategory
+  - ecosystem: string (optional)
   - status: active | paused | deprecated
   - firstSeen: datetime
   - lastUpdated: datetime
 
 labels:
-  - protocol
-  - {category}  # e.g., dex, lending
-  - {ecosystem}  # e.g., ethereum, solana
+  - solution
+  - {category}  # e.g., platform, service, tool
 ```
 
 ### Person Node
@@ -95,7 +94,7 @@ type: organization
 properties:
   - id: URI
   - name: string
-  - type: DAO | VC | Company | Exchange
+  - type: Company | Fund | Exchange | ServiceProvider
   - founded: date
 
 labels:
@@ -115,43 +114,43 @@ labels:
 |-----------|------|-----|-------------|
 | `is-a` | Instance | Category | Classification relationship |
 | `part-of` | Component | Whole | Structural containment |
-| `version-of` | Version | Protocol | Protocol version history |
+| `version-of` | Version | Solution | Solution version history |
 | `subcategory-of` | Subcategory | Category | Taxonomy hierarchy |
 
-**Example**: `uniswap-v3 is-a dex`
+**Example**: `acme-platform is-a platform`
 
 #### 2. Functional Relationships
 
 | Edge Type | From | To | Description |
 |-----------|------|-----|-------------|
-| `uses` | Protocol | Dependency | Uses another protocol/service |
-| `integrates-with` | Protocol | Protocol | Integrations between protocols |
-| `competes-with` | Protocol | Protocol | Direct competitors |
+| `uses` | Solution | Dependency | Uses another solution/service |
+| `integrates-with` | Solution | Solution | Integrations between solutions |
+| `competes-with` | Solution | Solution | Direct competitors |
 | `powers` | Infrastructure | Application | Enables applications |
-| `bridges` | Bridge | Chain | Connects blockchain networks |
+| `connects` | Connector | System | Connects systems |
 
-**Example**: `uniswap-v3 uses chainlink` (oracle)
+**Example**: `acme-platform uses external-api` (integration)
 
 #### 3. Temporal Relationships
 
 | Edge Type | From | To | Description |
 |-----------|------|-----|-------------|
-| `founded-by` | Organization/Protocol | Person | Creator relationship |
-| `invested-in` | Investor | Organization/Protocol | Investment relationship |
+| `founded-by` | Organization/Solution | Person | Creator relationship |
+| `invested-in` | Investor | Organization/Solution | Investment relationship |
 | `acquired-by` | Entity | Organization | Acquisition |
-| `forked-from` | Protocol | Protocol | Fork relationship |
-| `launched-on` | Protocol | Ecosystem | Deployment ecosystem |
+| `derived-from` | Solution | Solution | Fork or derivation relationship |
+| `launched-on` | Solution | Platform | Deployment platform |
 
-**Example**: `aave invested-in by: paradigm` (investor on other side)
+**Example**: `acme-platform invested-in by: investor-abc`
 
 #### 4. Quantitative Relationships
 
 | Edge Type | From | To | Properties |
 |-----------|------|-----|------------|
-| `has-tvl` | Protocol | Value | tvl: number, currency: string |
-| `raised` | Protocol/Org | Value | amount: number, round: string |
-| `users` | Protocol | Count | count: number, source: string |
-| `volume` | Protocol | Value | volume: number, period: string |
+| `has-metric` | Solution | Value | metric: string, value: number |
+| `raised` | Solution/Org | Value | amount: number, round: string |
+| `users` | Solution | Count | count: number, source: string |
+| `revenue` | Solution | Value | amount: number, period: string |
 
 #### 5. Causal Relationships
 
@@ -159,9 +158,9 @@ labels:
 |-----------|------|-----|-------------|
 | `caused` | Event | Event | Causal chain |
 | `resulted-in` | Action | Outcome | Outcome of an action |
-| `enabled` | Capability | Opportunity | Enables an opportunity |
+| `enables` | Capability | Opportunity | Enables an opportunity |
 | `addresses` | Solution | Problem | Problem solution |
-| `solves` | Protocol | Problem | Solves a specific problem |
+| `solves` | Solution | Problem | Solves a specific problem |
 
 ---
 
@@ -171,11 +170,11 @@ Graph relationships are **directional** but often have an inverse:
 
 | Relationship | Direction | Inverse |
 |--------------|-----------|---------|
-| `uses` | Protocol → Dependency | `used-by` |
+| `uses` | Solution → Dependency | `used-by` |
 | `founded-by` | Entity → Person | `founded` |
 | `invested-in` | Entity → Investor | `invested` |
-| `integrates-with` | Protocol → Protocol | `integrates-with` (symmetric) |
-| `competes-with` | Protocol → Protocol | `competes-with` (symmetric) |
+| `integrates-with` | Solution → Solution | `integrates-with` (symmetric) |
+| `competes-with` | Solution → Solution | `competes-with` (symmetric) |
 
 **Query Pattern**: Always traverse in both directions when exploring.
 
@@ -187,7 +186,7 @@ Some edges carry additional data:
 
 ```yaml
 uses:
-  description: Protocol uses another protocol
+  description: Solution uses another solution or dependency
   properties:
     - since: datetime (when the relationship started)
     - confidence: number (0-1)
@@ -206,7 +205,7 @@ competes-with:
   description: Direct competitive relationship
   properties:
     - strength: low | medium | high
-    - dimension: string (ux, tvl, fees, etc.)
+    - dimension: string (features, price, etc.)
 ```
 
 ---
@@ -216,33 +215,33 @@ competes-with:
 ### 1. Find Related Entities
 
 ```cypher
-MATCH (e:protocol {name: "Uniswap"})-[:integrates-with|uses]->(related)
+MATCH (e:solution {name: "Acme Platform"})-[:integrates-with|uses]->(related)
 RETURN related
 ```
 
-### 2. Find Ecosystem
+### 2. Find Market Solutions
 
 ```cypher
-MATCH (p:protocol)-[:deployed-on|part-of]->(ecosystem:L1 {name: "Ethereum"})
-WHERE p.category = "dex"
-RETURN ecosystem, count(p) as protocol_count
-ORDER BY protocol_count DESC
+MATCH (s:solution)-[:part-of]->(market {name: "Enterprise Software"})
+WHERE s.category = "platform"
+RETURN market, count(s) as solution_count
+ORDER BY solution_count DESC
 ```
 
 ### 3. Find Investment Chain
 
 ```cypher
 MATCH (investor:organization)-[:invested-in]->(entity)-[:founded-by]->(founder)
-WHERE investor.name = "Paradigm"
+WHERE investor.name = "Example Fund"
 RETURN founder, entity, investor
 ```
 
 ### 4. Find Competitors
 
 ```cypher
-MATCH (p1:protocol)-[:competes-with]-(p2:protocol)
-WHERE p1.category = "dex"
-RETURN p1, collect(p2.name) as competitors
+MATCH (s1:solution)-[:competes-with]-(s2:solution)
+WHERE s1.category = "platform"
+RETURN s1, collect(s2.name) as competitors
 ```
 
 ### 5. Find Opportunity Paths
@@ -275,8 +274,8 @@ checks:
     query: MATCH (e1), (e2) WHERE e1.id <> e2.id AND e1.name = e2.name RETURN e1, e2
 
   - name: circular_dependencies
-    description: Protocol should not depend on itself directly
-    query: MATCH (p)-[:uses*1..5]->(p) RETURN p
+    description: Solution should not depend on itself directly
+    query: MATCH (s)-[:uses*1..5]->(s) RETURN s
 
   - name: missing_provenance
     description: All relationships should have source evidence
@@ -308,6 +307,7 @@ checks:
 
 - `knowledge-model.md` — Conceptual knowledge model
 - `entity-schemas.md` — Node type definitions
+- `domain-config.md` — Domain-specific graph extensions
 
 ## Related Documents
 
@@ -318,4 +318,5 @@ checks:
 
 | Version | Date | Change |
 |---------|------|--------|
+| 0.2.0 | 2026-07-12 | Abstracted for multi-domain use |
 | 0.1.0 | 2026-06-29 | Initial draft |
