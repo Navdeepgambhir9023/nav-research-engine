@@ -6,21 +6,24 @@
 
 ## What Is This?
 
-`nav-research-engine` is a **research harness** that helps you research any domain with verifiable, source-backed insights and brutally honest output.
+`nav-research-engine` is a research harness that executes domain-agnostic research with verifiable, source-backed insights and brutally honest output.
 
 **The core principle**: Save users time and money, even when the truth is harsh.
 
 ---
 
-## Quick Start
-
-### Install as Plugin
+## Install
 
 ```bash
+/plugin marketplace add Navdeepgambhir9023/nav-research-engine
 /plugin install nav-research-engine@nav
 ```
 
-### Execute Research
+Then invoke as `/nav:research`.
+
+---
+
+## Quick Start
 
 ```bash
 /nav:research --domain ai "is there market for AI coding assistants?"
@@ -40,7 +43,7 @@
 
 ## Supported Domains
 
-Any domain works — specify what you're researching:
+Any domain works — just specify what you're researching:
 
 | Domain | Use For |
 |--------|---------|
@@ -75,24 +78,6 @@ If research shows:
 - **Uncertain viability** → it will flag it clearly
 
 **Better to know the harsh truth than a comfortable lie.**
-
----
-
-## Architecture
-
-```
-nav-research-engine/
-├── skills/                    # Skill definitions (AI-readable prompts)
-│   ├── research/             # Main research skill
-│   └── use-nav/              # Onboarding guide
-├── modes/                    # Execution layer (prompt library)
-│   ├── _shared.md            # System context, global rules
-│   ├── research.md           # Standard research workflow
-│   ├── deep-research.md      # Comprehensive investigation
-│   └── quick-research.md      # Rapid assessment
-├── docs/                      # Architecture specifications
-└── runtime/                   # Output contracts, state
-```
 
 ---
 
@@ -134,21 +119,25 @@ Every output MUST have:
 
 **Quick gut-check:**
 ```
-/nav:research --domain ai --quick "is local AI viable?"
+/nav:research --domain ai --quick "is local AI viable for production?"
 ```
 
 ---
 
-## Plugin Structure
+## Architecture
 
 ```
-.claude-plugin/
-├── plugin.json         # Plugin metadata
-└── marketplace.json    # Marketplace manifest
-
-skills/
-├── research/          # Research execution skill
-└── use-nav/           # Onboarding guide
+nav-research-engine/
+├── skills/                    # Skill definitions
+│   ├── research/             # Main research skill
+│   └── use-nav/              # Onboarding guide
+├── modes/                    # Prompt library (execution layer)
+│   ├── _shared.md           # System context, global rules
+│   ├── research.md          # Standard research workflow
+│   ├── deep-research.md      # Comprehensive investigation
+│   └── quick-research.md     # Rapid assessment
+├── docs/                     # Architecture specifications
+└── runtime/                  # Output contracts
 ```
 
 ---
