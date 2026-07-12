@@ -16,7 +16,7 @@
 
 ```bash
 /plugin marketplace add Navdeepgambhir9023/nav-research-engine
-/plugin install nav-research-engine@nav
+/plugin install nav@nav-research-engine
 ```
 
 Then invoke as `/nav:research`.
