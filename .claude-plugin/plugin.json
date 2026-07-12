@@ -1,8 +1,21 @@
 {
   "name": "nav-research-engine",
-  "description": "An autonomous Research Operating System for Web3 market intelligence",
+  "description": "A domain-agnostic Research Operating System with brutally honest output — /nav:research executes adaptive discovery, verification, and synthesis with source tracking and confidence scoring.",
   "version": "0.1.0",
   "author": {
     "name": "Navdeep Singh"
-  }
+  },
+  "homepage": "https://github.com/navdeep-singh/nav-research-engine",
+  "repository": "https://github.com/navdeep-singh/nav-research-engine",
+  "license": "MIT",
+  "keywords": [
+    "research",
+    "claude-code",
+    "skill-pack",
+    "verification",
+    "market-research",
+    "ai-research",
+    "honesty",
+    "domain-agnostic"
+  ]
 }

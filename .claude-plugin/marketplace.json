@@ -1,15 +1,15 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
-  "name": "navResearchEngine",
-  "description": "An autonomous Research Operating System for Web3 market intelligence. Install with `/plugin install nav-research-engine@navResearchEngine`.",
+  "name": "nav-research-engine",
+  "description": "Domain-agnostic Research OS with brutal honesty. Install with `/plugin install nav-research-engine@nav`.",
   "owner": {
     "name": "Navdeep Singh"
   },
   "plugins": [
     {
-      "name": "nav-research-engine",
+      "name": "nav",
       "source": "./",
-      "description": "Web3 Research OS: /research executes autonomous discovery, analysis, validation, and knowledge management."
+      "description": "Research OS: /nav:research executes adaptive discovery with verification, source tracking, and brutally honest output. Supports any domain (AI, market, tech, bio, etc.)."
     }
   ]
 }

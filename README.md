@@ -1,190 +1,155 @@
 # nav-research-engine
 
-**A Domain-Agnostic Research Orchestration Harness**
+**A Domain-Agnostic Research Operating System with Brutal Honesty**
 
 ---
 
 ## What Is This?
 
-`nav-research-engine` is a **Research Orchestration Harness** that helps researchers discover, organize, validate, and prioritize insights across any domain (AI, BioTech, Market Research, PMF Analysis, etc.) — with a human researcher performing the actual research.
+`nav-research-engine` is a **research harness** that helps you research any domain with verifiable, source-backed insights and brutally honest output.
 
-The harness provides:
-- **Adaptive Discovery** — Clarifies vague research queries through intelligent questioning
-- **Multi-Domain Support** — Works across any vertical with domain-specific configurations
-- **Subagent Orchestration** — Coordinates Claude Code, Gemini CLI, Codex for research execution
-- **Standardized Outputs** — Consistent artifact formats regardless of domain
+**The core principle**: Save users time and money, even when the truth is harsh.
 
 ---
 
 ## Quick Start
 
-### As a Plugin
+### Install as Plugin
 
 ```bash
-# Install the plugin
 /plugin install nav-research-engine@nav
-
-# Execute research (requires --domain flag)
-/nav:research --domain ai "find PMF for LLM applications"
 ```
 
-### In Any Project
+### Execute Research
 
 ```bash
-# Clone the repository
-git clone https://github.com/Navdeepgambhir9023/nav-research-engine.git
-
-# Open in Claude Code
-cd nav-research-engine
-claude
-
-# Execute research
-/nav:research --domain <domain> "<query>"
+/nav:research --domain ai "is there market for AI coding assistants?"
 ```
 
 ---
 
-## Usage
+## Research Modes
 
-### Command Syntax
+| Command | When to Use | Time |
+|---------|-------------|------|
+| `/nav:research --domain x "query"` | Standard research | 10-15 min |
+| `/nav:research --domain x --deep "query"` | Deep investigation | 15-30 min |
+| `/nav:research --domain x --quick "query"` | Rapid gut-check | 3-5 min |
 
-```bash
-/nav:research --domain <domain> <query>
-```
+---
 
-**Examples:**
-```bash
-/nav:research --domain ai "find PMF for LLM applications"
-/nav:research --domain market "analyze competitive landscape for SaaS"
-/nav:research --domain pmf "validate problem statement for X"
-/nav:research --domain tech "research AI agent frameworks"
-```
+## Supported Domains
 
-**Available Domains:**
-- `ai` — Artificial Intelligence & Machine Learning
-- `market` — Market Research & Competitive Analysis
-- `pmf` — Product-Market Fit Analysis
-- `tech` — Technology Research
+Any domain works — specify what you're researching:
 
-If no `--domain` is provided, the system will ask clarifying questions.
+| Domain | Use For |
+|--------|---------|
+| `ai` | AI/ML, models, infrastructure |
+| `market` | Market research, competitive analysis |
+| `tech` | Technical deep-dives |
+| `pmf` | Product-market-fit |
+| `bio` | BioTech, healthcare |
+| `legal` | Legal, compliance |
+
+---
+
+## What You Get
+
+Every research output includes:
+
+- **Source citations** — `[SRC-001]` for every claim
+- **Confidence scores** — 0-100% per finding
+- **Verification status** — VERIFIED / CONFLICTING / UNVERIFIED
+- **HONEST ASSESSMENT** — Direct truth, no sugarcoating
+- **Limitations** — What couldn't be determined
+
+---
+
+## The Brutal Truth Rule
+
+> "It should save users time and money, even when the truth is harsh."
+
+If research shows:
+- **No opportunity** → it will say so directly
+- **High risks** → it won't minimize them
+- **Uncertain viability** → it will flag it clearly
+
+**Better to know the harsh truth than a comfortable lie.**
 
 ---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                    NAV-RESEARCH-ENGINE HARNESS                              │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│   ┌─────────────┐     ┌─────────────┐     ┌─────────────┐              │
-│   │  Discovery │────▶│  Analysis │────▶│  Planning │              │
-│   │            │     │           │     │            │              │
-│   │ Adaptive   │     │ Transform  │     │ Prioritize │              │
-│   │ Questions  │     │ to Insights│     │ Research   │              │
-│   └─────────────┘     └─────────────┘     └──────┬──────┘              │
-│                                                   │                       │
-│                                                   ▼                       │
-│                                          ┌─────────────┐                │
-│                                          │ Execution  │                │
-│                                          │            │                │
-│                                          │ Subagent  │                │
-│                                          │ Workflows │                │
-│                                          └──────┬──────┘                │
-│                                                 │                         │
-│                                                 ▼                         │
-│                                          ┌─────────────┐                │
-│                                          │ Validation │                │
-│                                          │            │                │
-│                                          │ Quality    │                │
-│                                          │ Gates      │                │
-│                                          └─────────────┘                │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## Repository Structure
-
-```
 nav-research-engine/
-├── CLAUDE.md                     # Core behavior and constraints
-├── README.md                     # This file
-├── .claude-plugin/               # Plugin manifest
-│   ├── plugin.json
-│   └── commands/research.md
-├── docs/                         # Architecture specifications
-│   ├── 00-foundation/           # Vision, principles, glossary
-│   ├── 01-architecture/         # System design
-│   ├── 02-engine/               # State management, event bus
-│   ├── 04-knowledge/            # Knowledge model, taxonomy
-│   └── 09-safety/              # Human oversight, safeguards
-├── runtime/                      # Runtime layer (orchestration)
-│   ├── commands/                 # Entry points
-│   │   ├── parse-input.sh      # Domain flag parsing
-│   │   ├── research.sh          # Research orchestration
-│   │   └── discovery.md         # Adaptive questioning
-│   ├── specifications/          # Runtime contracts
-│   └── state/                   # Execution state
-└── .loop/                       # Goal system
+├── skills/                    # Skill definitions (AI-readable prompts)
+│   ├── research/             # Main research skill
+│   └── use-nav/              # Onboarding guide
+├── modes/                    # Execution layer (prompt library)
+│   ├── _shared.md            # System context, global rules
+│   ├── research.md           # Standard research workflow
+│   ├── deep-research.md      # Comprehensive investigation
+│   └── quick-research.md      # Rapid assessment
+├── docs/                      # Architecture specifications
+└── runtime/                   # Output contracts, state
 ```
 
 ---
 
-## Key Concepts
-
-### Adaptive Discovery
-
-The system asks clarifying questions when your query is vague:
+## How It Works
 
 ```
-User: /nav:research "help me understand my market"
-System: What is your product/service? Who is your target user?
-User: [provides context]
-System: What specific aspect of the market do you want to understand?
-User: [clarifies]
-System: [executes research with full context]
+/nav:research --domain ai "market for AI coding assistants"
+        ↓
+1. Discovery      → Find relevant sources
+2. Verification   → Cross-reference claims
+3. Synthesis      → Build verified insights
+4. Output         → Brutally honest report
 ```
-
-### Domain Configuration
-
-Each domain has its own configuration with:
-- Domain-specific entity types
-- Taxonomy hierarchies
-- Research templates
-- Quality standards
-
-### Execution Layer
-
-The harness orchestrates research using:
-- **Subagents** — Parallel research tasks
-- **Workflows** — Coordinated multi-step research
-- **Quality Gates** — Validation checkpoints
 
 ---
 
-## Design Principles
+## Quality Standards
 
-1. **Knowledge First** — The knowledge base is the primary artifact
-2. **Evidence Driven** — Every claim is traceable to evidence
-3. **Human-in-the-Loop** — Critical decisions require human judgment
-4. **Deterministic** — Same inputs → same outputs
-5. **Composable** — Components are independent, replaceable
-6. **Domain-Agnostic** — Works across any vertical
+Every output MUST have:
+- Source citations for all claims
+- Confidence scores (0-100%)
+- Conflicts explicitly flagged
+- HONEST ASSESSMENT section
+- Limitations clearly stated
 
 ---
 
-## Architecture Documents
+## Examples
 
-| Document | Purpose |
-|----------|---------|
-| `docs/01-architecture/domain-config.md` | Domain configuration structure |
-| `docs/01-architecture/execution-layer.md` | Subagent orchestration |
-| `docs/02-engine/state-manager.md` | Execution context |
-| `docs/02-engine/event-bus.md` | Communication model |
-| `docs/04-knowledge/knowledge-model.md` | Entity definitions |
-| `docs/04-knowledge/taxonomy.md` | Classification hierarchy |
+**Market research:**
+```
+/nav:research --domain market "fintech opportunities 2024"
+```
+
+**Technical evaluation:**
+```
+/nav:research --domain tech --deep "evaluate langchain alternatives"
+```
+
+**Quick gut-check:**
+```
+/nav:research --domain ai --quick "is local AI viable?"
+```
+
+---
+
+## Plugin Structure
+
+```
+.claude-plugin/
+├── plugin.json         # Plugin metadata
+└── marketplace.json    # Marketplace manifest
+
+skills/
+├── research/          # Research execution skill
+└── use-nav/           # Onboarding guide
+```
 
 ---
 
